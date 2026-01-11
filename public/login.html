@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login – CodeSense</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="auth-body">
+  <div id="global-loader" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+
+  <div class="auth-card">
+    <h1>Welcome back 👋</h1>
+    <p class="subtitle">Log in to your CodeSense workspace</p>
+
+    <div id="form-error" class="form-error" style="display:none;"></div>
+
+    <form id="login-form">
+      <label>
+        Email
+        <input type="email" name="email" required />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" required />
+      </label>
+      <button type="submit" class="primary-btn full-width">Log in</button>
+    </form>
+
+    <p class="auth-footer">
+      Don’t have an account?
+      <a href="signup.html">Sign up</a>
+    </p>
+  </div>
+
+  <script type="module" src="./js/common.js"></script>
+  <script type="module" src="./js/auth.js"></script>
+</body>
+</html>

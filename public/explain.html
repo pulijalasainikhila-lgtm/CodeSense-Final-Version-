@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Explain Code – CodeSense</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app-body">
+  <div id="global-loader" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="logo">CodeSense</div>
+    <nav>
+      <button id="theme-toggle" class="theme-toggle-btn">
+      <span class="theme-icon">☀️</span>
+      <span class="theme-text">Toggle Theme</span>
+      </button>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="explain.html" class="active">Explain Code</a>
+      <a href="convert.html">Convert Code</a>
+      <a href="history.html">History</a>
+      <a href="stats.html">Statistics</a>
+      <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+      <button id="logout-btn" class="ghost-btn">Logout</button>
+    </nav>
+  </aside>
+
+  <main class="app-main">
+    <h1>Code Explanation Tool</h1>
+    <p>Analyze and understand your code with AI</p>
+
+    <div class="split-container">
+      <!-- Left section -->
+      <div class="input-section">
+        <h2 class="section-header">Input Code</h2>
+
+        <form id="explain-form">
+          <label>
+            Language
+            <select id="language">
+              <option value="C">C</option>
+              <option value="C++">C++</option>
+              <option value="Java">Java</option>
+              <option value="Python">Python</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="Go">Go</option>
+              <option value="Rust">Rust</option>
+            </select>
+          </label>
+
+          <label>
+            Code
+            <textarea id="code" placeholder="// Write or paste your code here" required style = "min-height:300px;overflow-x:auto;"></textarea>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Explain</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right section -->
+      <div class="output-section">
+        <h2 class="section-header">Output</h2>
+        <pre id="explain-output"></pre>
+      </div>
+    </div>
+  </main>
+
+  <!-- Main logic with common.js imports -->
+  <script type="module">
+    import { requireAuth, getUser, clearToken } from "./js/common.js";
+
+    requireAuth();
+
+    const user = getUser();
+    const adminLink = document.getElementById("admin-link");
+
+    if (user && user.role === "admin") {
+      adminLink.style.display = "block";
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      clearToken();
+      window.location.href = "login.html";
+    });
+  </script>
+  
+  <!-- Explain logic -->
+  <script type="module" src="./js/explain.js"></script>
+  <script type="module">
+  import { toggleTheme, initTheme } from "./js/common.js";
+  
+  // Initialize theme
+  initTheme();
+  
+  // Add theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const newTheme = toggleTheme();
+      const icon = themeToggle.querySelector(".theme-icon");
+      if (icon) {
+        icon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+      }
+    });
+  }
+</script>
+</body>
+</html>

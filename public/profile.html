@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile & Settings – CodeSense</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="app-body">
+  <div id="global-loader" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="logo">CodeSense</div>
+    <nav>
+      <button id="theme-toggle" class="theme-toggle-btn">
+      <span class="theme-icon">☀️</span>
+      <span class="theme-text">Toggle Theme</span>
+      </button>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="explain.html">Explain Code</a>
+      <a href="convert.html">Convert Code</a>
+      <a href="history.html">History</a>
+      <a href="stats.html">Statistics</a>
+      <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+      
+      <button id="logout-btn" class="ghost-btn">Logout</button>
+    </nav>
+  </aside>
+
+  <main class="app-main">
+    <h1>Profile & Settings</h1>
+    <p>Manage your account and preferences</p>
+
+    <div class="settings-container">
+      
+      <!-- Profile Section -->
+      <div class="settings-section">
+        <div class="section-header-wrapper">
+          <div>
+            <h2 class="section-title">Profile Information</h2>
+            <p class="section-subtitle">Update your personal details</p>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-avatar">
+            <div class="avatar-circle">
+              <span id="avatar-initials">U</span>
+            </div>
+          </div>
+
+          <div class="profile-info">
+            <h3 id="profile-name">Loading...</h3>
+            <p id="profile-email">Loading...</p>
+            <span class="profile-badge" id="profile-role">user</span>
+          </div>
+        </div>
+
+        <div id="profile-error" class="form-error" style="display:none;"></div>
+        <div id="profile-success" class="form-success" style="display:none;"></div>
+
+        <form id="profile-form" class="settings-form">
+          <label>
+            Name
+            <input type="text" id="name-input" name="name" required />
+          </label>
+
+          <label>
+            Email
+            <input type="email" id="email-input" name="email" disabled />
+            <span class="input-hint">Email cannot be changed</span>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Save Changes</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Password Section -->
+      <div class="settings-section">
+        <div class="section-header-wrapper">
+          <div>
+            <h2 class="section-title">Change Password</h2>
+            <p class="section-subtitle">Update your password to keep your account secure</p>
+          </div>
+        </div>
+
+        <div id="password-error" class="form-error" style="display:none;"></div>
+        <div id="password-success" class="form-success" style="display:none;"></div>
+
+        <form id="password-form" class="settings-form">
+          <label>
+            Current Password
+            <input type="password" id="current-password" name="currentPassword" required />
+          </label>
+
+          <label>
+            New Password
+            <input type="password" id="new-password" name="newPassword" required minlength="6" />
+            <span class="input-hint">Minimum 6 characters</span>
+          </label>
+
+          <label>
+            Confirm New Password
+            <input type="password" id="confirm-password" name="confirmPassword" required minlength="6" />
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Update Password</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Data Management Section -->
+      <div class="settings-section">
+        <div class="section-header-wrapper">
+          <div>
+            <h2 class="section-title">Data Management</h2>
+            <p class="section-subtitle">Manage your history and data</p>
+          </div>
+        </div>
+
+        <div class="data-stats">
+          <div class="data-stat-item">
+            <span class="data-stat-label">Total History Items</span>
+            <span class="data-stat-value" id="history-count">0</span>
+          </div>
+          <div class="data-stat-item">
+            <span class="data-stat-label">Account Created</span>
+            <span class="data-stat-value" id="account-created">-</span>
+          </div>
+        </div>
+
+        <div class="danger-actions">
+          <button id="clear-history-btn" class="danger-btn-large" style="color: red;">
+            <svg width="20" height="20" color="red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Clear All History
+          </button>
+        </div>
+      </div>
+
+      <!-- Account Actions Section -->
+      <div class="settings-section danger-section">
+        <div class="section-header-wrapper">
+          <div>
+            <h2 class="section-title">Account Actions</h2>
+            <p class="section-subtitle">Logout or delete your account</p>
+          </div>
+        </div>
+
+        <div class="danger-actions">
+          <button id="logout-main-btn" class="secondary-btn-large">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Logout
+          </button>
+
+          <button id="delete-account-btn" class="danger-btn-large" style="color: red;">
+            <svg width="20" height="20" viewBox="0 0 24 24" color="red" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            Delete Account
+          </button>
+        </div>
+
+        <p class="danger-warning" style="color:darkgoldenrod">
+          ⚠️ Warning: Deleting your account is permanent and cannot be undone. All your data will be lost.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Confirmation Modal -->
+  <div id="confirm-modal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 id="modal-title">Confirm Action</h3>
+      <p id="modal-message">Are you sure you want to proceed?</p>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="secondary-btn">Cancel</button>
+        <button id="modal-confirm" class="danger-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { requireAuth, getUser, clearToken } from "./js/common.js";
+    requireAuth();
+    const user = getUser();
+    const adminLink = document.getElementById("admin-link");
+    if (user && user.role === "admin") adminLink.style.display = "block";
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      clearToken();
+      window.location.href = "login.html";
+    });
+  </script>
+  <script type="module" src="./js/common.js"></script>
+  <script type="module" src="./js/profile.js"></script>
+  <script type="module">
+  import { toggleTheme, initTheme } from "./js/common.js";
+  
+  // Initialize theme
+  initTheme();
+  
+  // Add theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const newTheme = toggleTheme();
+      const icon = themeToggle.querySelector(".theme-icon");
+      if (icon) {
+        icon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+      }
+    });
+  }
+</script>
+</body>
+</html>

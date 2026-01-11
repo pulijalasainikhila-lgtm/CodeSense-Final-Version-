@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analytics Dashboard – CodeSense Admin</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <style>
+    .analytics-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .admin-user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 16px;
+    }
+
+    .admin-details h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .admin-details p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .overview-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .overview-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #8b5cf6);
+    }
+
+    .overview-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+    }
+
+    .overview-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .overview-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 24px;
+    }
+
+    .overview-icon.blue {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent);
+    }
+
+    .overview-icon.green {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .overview-icon.yellow {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+    }
+
+    .overview-icon.pink {
+      background: rgba(236, 72, 153, 0.15);
+      color: #ec4899;
+    }
+
+    .overview-info h3 {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      margin: 0 0 12px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .overview-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+      background: linear-gradient(135deg, var(--text), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .charts-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .chart-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chart-card h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 0 0 24px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .chart-wrapper {
+      height: 300px;
+      position: relative;
+    }
+
+    .full-width-chart {
+      grid-column: 1 / -1;
+    }
+
+    .users-section {
+      margin-top: 32px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 0 0 24px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .users-table-wrapper {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .table-controls {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(99, 102, 241, 0.03);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .search-box input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      width: 100%;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-state svg {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    @media (max-width: 1200px) {
+      .charts-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .analytics-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body class="app-body">
+  <div id="global-loader" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="logo">CodeSense</div>
+    <nav>
+      <button id="theme-toggle" class="theme-toggle-btn">
+      <span class="theme-icon">☀️</span>
+      <span class="theme-text">Toggle Theme</span>
+      </button>
+      <a href="admin.html" class="active">📊 Analytics Dashboard</a>
+      <a href="admin-users.html">👥 User Management</a>
+      <a href="admin-email.html">✉️ Email</a>
+      <button id="logout-btn" class="ghost-btn">Logout</button>
+    </nav>
+  </aside>
+
+  <main class="app-main">
+    <div class="analytics-header">
+      <div>
+        <h1>Analytics Dashboard</h1>
+        <p>Monitor system performance and user activities</p>
+      </div>
+      <div class="admin-user-info">
+        <div class="admin-avatar" id="admin-avatar">SA</div>
+        <div class="admin-details">
+          <h3 id="admin-name">Admin</h3>
+          <p>Admin</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overview Statistics -->
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="overview-content">
+          <div class="overview-info">
+            <h3>Total Users</h3>
+            <p class="overview-number" id="total-users">0</p>
+          </div>
+          <div class="overview-icon blue">
+            👥
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-card">
+        <div class="overview-content">
+          <div class="overview-info">
+            <h3>Total Searches</h3>
+            <p class="overview-number" id="total-searches">0</p>
+          </div>
+          <div class="overview-icon green">
+            🔍
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-card">
+        <div class="overview-content">
+          <div class="overview-info">
+            <h3>Code Analysis</h3>
+            <p class="overview-number" id="code-analysis">0</p>
+          </div>
+          <div class="overview-icon yellow">
+            💻
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-card">
+        <div class="overview-content">
+          <div class="overview-info">
+            <h3>Languages Supported</h3>
+            <p class="overview-number" id="languages-supported">7</p>
+          </div>
+          <div class="overview-icon pink">
+            🔤
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <div class="chart-card">
+        <h2>Language Popularity Trends</h2>
+        <div class="chart-wrapper">
+          <canvas id="language-trends-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h2>Monthly Code Requests</h2>
+        <div class="chart-wrapper">
+          <canvas id="monthly-requests-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card full-width-chart">
+        <h2>Feature Usage Over Time</h2>
+        <div class="chart-wrapper">
+          <canvas id="feature-usage-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Section -->
+    <div class="users-section">
+      <h2 class="section-title">
+        <span>User Management</span>
+      </h2>
+
+      <div class="users-table-wrapper">
+        <div class="table-controls">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" id="user-search" placeholder="Search users..." />
+          </div>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All Users</button>
+            <button class="filter-btn" data-filter="admin">Admins</button>
+            <button class="filter-btn" data-filter="user">Regular Users</button>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-body">
+            <tr>
+              <td colspan="5">
+                <div class="empty-state">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" color="red" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                  <p>Loading users...</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { requireAdmin, getUser, clearToken } from "./js/common.js";
+    requireAdmin();
+    
+    const user = getUser();
+    if (user) {
+      document.getElementById('admin-name').textContent = user.name;
+      const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+      document.getElementById('admin-avatar').textContent = initials;
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      clearToken();
+      window.location.href = "login.html";
+    });
+  </script>
+  <script type="module" src="./js/common.js"></script>
+  <script type="module" src="./js/admin-analytics.js"></script>
+  </script>
+  <script type="module">
+  import { toggleTheme, initTheme } from "./js/common.js";
+  
+  // Initialize theme
+  initTheme();
+  
+  // Add theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const newTheme = toggleTheme();
+      const icon = themeToggle.querySelector(".theme-icon");
+      if (icon) {
+        icon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+      }
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Statistics – CodeSense</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="app-body">
+  <div id="global-loader" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="logo">CodeSense</div>
+    <nav>
+      <button id="theme-toggle" class="theme-toggle-btn">
+      <span class="theme-icon">☀️</span>
+      <span class="theme-text">Toggle Theme</span>
+      </button>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="explain.html">Explain Code</a>
+      <a href="convert.html">Convert Code</a>
+      <a href="history.html">History</a>
+      <a href="stats.html" class="active">Statistics</a>
+      <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+      <button id="logout-btn" class="ghost-btn">Logout</button>
+    </nav>
+  </aside>
+
+  <main class="app-main">
+    <h1>Statistics</h1>
+    <p>Analyze your CodeSense usage</p>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-content">
+          <div class="stat-info">
+            <h3>Total Actions</h3>
+            <p class="stat-number" id="total-actions">0</p>
+          </div>
+          <div class="stat-icon trending">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-content">
+          <div class="stat-info">
+            <h3>Languages Used</h3>
+            <p class="stat-number" id="languages-used">0</p>
+          </div>
+          <div class="stat-icon code">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-content">
+          <div class="stat-info">
+            <h3>Most Used</h3>
+            <p class="stat-number" id="most-used">-</p>
+          </div>
+          <div class="stat-icon star">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Usage Chart -->
+    <div class="chart-container">
+      <h2>Feature Usage</h2>
+      <canvas id="feature-chart"></canvas>
+    </div>
+
+    <!-- Language Distribution -->
+    <div class="chart-container">
+      <h2>Language Distribution</h2>
+      <div class="pie-chart-wrapper">
+        <canvas id="language-pie-chart"></canvas>
+        <div id="language-legend" class="chart-legend"></div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { requireAuth, getUser, clearToken } from "./js/common.js";
+    requireAuth();
+    const user = getUser();
+    const adminLink = document.getElementById("admin-link");
+    if (user && user.role === "admin") adminLink.style.display = "block";
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      clearToken();
+      window.location.href = "login.html";
+    });
+  </script>
+  <script type="module" src="./js/common.js"></script>
+  <script type="module" src="./js/stats.js"></script>
+  <script type="module">
+  import { toggleTheme, initTheme } from "./js/common.js";
+  
+  // Initialize theme
+  initTheme();
+  
+  // Add theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const newTheme = toggleTheme();
+      const icon = themeToggle.querySelector(".theme-icon");
+      if (icon) {
+        icon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+      }
+    });
+  }
+</script>
+</body>
+</html>

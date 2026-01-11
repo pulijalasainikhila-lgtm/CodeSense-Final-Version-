@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Convert Code – CodeSense</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="app-body">
+  <div id="global-loader" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="logo">CodeSense</div>
+    <nav>
+      <button id="theme-toggle" class="theme-toggle-btn">
+      <span class="theme-icon">☀️</span>
+      <span class="theme-text">Toggle Theme</span>
+      </button>
+      <a href="profile.html">Profile</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="explain.html">Explain Code</a>
+      <a href="convert.html" class="active">Convert Code</a>
+      <a href="history.html">History</a>
+      <a href="stats.html">Statistics</a>
+      <a href="admin.html" id="admin-link" style="display:none;">Admin</a>
+      <button id="logout-btn" class="ghost-btn">Logout</button>
+    </nav>
+  </aside>
+
+  <main class="app-main">
+    <h1>Code Conversion Tool</h1>
+    <p>Transform your code between different programming languages</p>
+
+    <div class="split-container">
+      <!-- Left side: Input -->
+      <div class="input-section">
+        <h2 class="section-header">Input Code</h2>
+        <form id="convert-form">
+          <label>
+            From language
+            <select id="fromLanguage">
+              <option value="C">C</option>
+              <option value="C++">C++</option>
+              <option value="Java">Java</option>
+              <option value="Python">Python</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="Go">Go</option>
+              <option value="Rust">Rust</option>
+            </select>
+          </label>
+          <label>
+            To language
+            <select id="toLanguage">
+              <option value="Python">Python</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="Java">Java</option>
+              <option value="C">C</option>
+              <option value="C++">C++</option>
+              <option value="Go">Go</option>
+              <option value="Rust">Rust</option>
+            </select>
+          </label>
+          <label>
+            Code
+            <textarea id="code" placeholder="// Write or paste your code here" required></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="primary-btn">Convert</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right side: Output -->
+      <div class="output-section">
+        <h2 class="section-header">Output</h2>
+        <pre id="convert-output"></pre>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { requireAuth, getUser, clearToken } from "./js/common.js";
+    requireAuth();
+    const user = getUser();
+    const adminLink = document.getElementById("admin-link");
+    if (user && user.role === "admin") adminLink.style.display = "block";
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      clearToken();
+      window.location.href = "login.html";
+    });
+  </script>
+  <script type="module" src="./js/common.js"></script>
+  <script type="module" src="./js/convert.js"></script>
+  <script type="module">
+  import { toggleTheme, initTheme } from "./js/common.js";
+  
+  // Initialize theme
+  initTheme();
+  
+  // Add theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const newTheme = toggleTheme();
+      const icon = themeToggle.querySelector(".theme-icon");
+      if (icon) {
+        icon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+      }
+    });
+  }
+</script>
+</body>
+</html>
